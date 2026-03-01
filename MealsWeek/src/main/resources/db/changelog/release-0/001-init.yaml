@@ -1,0 +1,218 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-init
+      author: you
+      changes:
+        - createTable:
+            tableName: ingredient
+            columns:
+              - column:
+                  name: ingredient_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_ingredient
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+        - addUniqueConstraint:
+            tableName: ingredient
+            columnNames: name
+            constraintName: uk_ingredient_name
+
+        - createTable:
+            tableName: dish
+            columns:
+              - column:
+                  name: dish_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_dish
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(2000)
+
+        - addUniqueConstraint:
+            tableName: dish
+            columnNames: name
+            constraintName: uk_dish_name
+
+        - createTable:
+            tableName: day_of_week
+            columns:
+              - column:
+                  name: day_of_week_id
+                  type: INT
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_day_of_week
+              - column:
+                  name: name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+
+        - addUniqueConstraint:
+            tableName: day_of_week
+            columnNames: name
+            constraintName: uk_day_of_week_name
+
+        - createTable:
+            tableName: week
+            columns:
+              - column:
+                  name: week_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_week
+              - column:
+                  name: active
+                  type: BOOLEAN
+                  defaultValueBoolean: true
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: dish_ingredient
+            columns:
+              - column:
+                  name: dish_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ingredient_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: DECIMAL(19,4)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: unit
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: note
+                  type: VARCHAR(255)
+
+        - addPrimaryKey:
+            tableName: dish_ingredient
+            columnNames: dish_id, ingredient_id
+            constraintName: pk_dish_ingredient
+
+        - addForeignKeyConstraint:
+            baseTableName: dish_ingredient
+            baseColumnNames: dish_id
+            referencedTableName: dish
+            referencedColumnNames: dish_id
+            constraintName: fk_dish_ingredient_dish
+
+        - addForeignKeyConstraint:
+            baseTableName: dish_ingredient
+            baseColumnNames: ingredient_id
+            referencedTableName: ingredient
+            referencedColumnNames: ingredient_id
+            constraintName: fk_dish_ingredient_ingredient
+
+        # CHECK (amount > 0) — через raw SQL, потому что Liquibase по-разному поддерживает check
+        - sql:
+            sql: "ALTER TABLE dish_ingredient ADD CONSTRAINT chk_dish_ingredient_amount_positive CHECK (amount > 0);"
+
+        - createTable:
+            tableName: week_dish
+            columns:
+              - column:
+                  name: week_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: dish_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: day_of_week_id
+                  type: INT
+                  constraints:
+                    nullable: false
+
+        - addPrimaryKey:
+            tableName: week_dish
+            columnNames: week_id, dish_id, day_of_week_id
+            constraintName: pk_week_dish
+
+        - addForeignKeyConstraint:
+            baseTableName: week_dish
+            baseColumnNames: week_id
+            referencedTableName: week
+            referencedColumnNames: week_id
+            constraintName: fk_week_dish_week
+
+        - addForeignKeyConstraint:
+            baseTableName: week_dish
+            baseColumnNames: dish_id
+            referencedTableName: dish
+            referencedColumnNames: dish_id
+            constraintName: fk_week_dish_dish
+
+        - addForeignKeyConstraint:
+            baseTableName: week_dish
+            baseColumnNames: day_of_week_id
+            referencedTableName: day_of_week
+            referencedColumnNames: day_of_week_id
+            constraintName: fk_week_dish_day
+
+        # наполнение справочника дней
+        - insert:
+            tableName: day_of_week
+            columns:
+              - column: { name: day_of_week_id, valueNumeric: 1 }
+              - column: { name: name, value: "Понедельник" }
+        - insert:
+            tableName: day_of_week
+            columns:
+              - column: { name: day_of_week_id, valueNumeric: 2 }
+              - column: { name: name, value: "Вторник" }
+        - insert:
+            tableName: day_of_week
+            columns:
+              - column: { name: day_of_week_id, valueNumeric: 3 }
+              - column: { name: name, value: "Среда" }
+        - insert:
+            tableName: day_of_week
+            columns:
+              - column: { name: day_of_week_id, valueNumeric: 4 }
+              - column: { name: name, value: "Четверг" }
+        - insert:
+            tableName: day_of_week
+            columns:
+              - column: { name: day_of_week_id, valueNumeric: 5 }
+              - column: { name: name, value: "Пятница" }
+        - insert:
+            tableName: day_of_week
+            columns:
+              - column: { name: day_of_week_id, valueNumeric: 6 }
+              - column: { name: name, value: "Суббота" }
+        - insert:
+            tableName: day_of_week
+            columns:
+              - column: { name: day_of_week_id, valueNumeric: 7 }
+              - column: { name: name, value: "Воскресенье" }
