@@ -35,7 +35,7 @@ public class WeekDish {
     @JoinColumn(name = "day_of_week_id", nullable = false,
             foreignKey = @ForeignKey(name = "fk_week_dish_day"))
     @ToString.Exclude
-    private DayOfWeekEntity dayOfWeek;
+    private DayOfWeek dayOfWeek;
 
     @PrePersist @PreUpdate
     private void syncId() {

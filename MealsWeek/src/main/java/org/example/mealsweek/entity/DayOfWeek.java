@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DayOfWeekEntity {
+public class DayOfWeek {
     @Id
     @Column(name = "day_of_week_id")
     private Integer id;
