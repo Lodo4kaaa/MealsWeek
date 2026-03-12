@@ -7,7 +7,7 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.domain.Sort;
 
 @Data
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class PageAndSortFilter {
