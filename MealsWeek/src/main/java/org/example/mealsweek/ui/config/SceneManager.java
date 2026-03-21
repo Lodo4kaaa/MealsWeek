@@ -6,9 +6,11 @@ import lombok.RequiredArgsConstructor;
 import org.example.mealsweek.service.DishService;
 import org.example.mealsweek.service.IngredientService;
 import org.example.mealsweek.service.MeasurementUnitService;
+import org.example.mealsweek.service.WeekService;
 import org.example.mealsweek.ui.Dish.DishesView;
 import org.example.mealsweek.ui.Ingredient.IngredientsView;
 import org.example.mealsweek.ui.MainMenuView;
+import org.example.mealsweek.ui.Week.WeeksView;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,6 +20,7 @@ public class SceneManager {
     private final IngredientService ingredientService;
     private final DishService dishService;
     private final MeasurementUnitService measurementUnitService;
+    private final WeekService weekService;
 
     private Stage stage;
     private Scene scene;
@@ -50,7 +53,14 @@ public class SceneManager {
                 this::showMainMenu
         ));
     }
+
     public void showShopping() { /* позже */ }
 
-    public void showWeeks() { /* позже */ }
+    public void showWeeks() {
+        scene.setRoot(new WeeksView(
+                weekService,
+                dishService,
+                this::showMainMenu
+        ));
+    }
 }

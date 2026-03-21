@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: 002-measurement-unit
-      author: openai
+      author: natrodip
       changes:
         - createTable:
             tableName: measurement_unit
@@ -28,27 +28,12 @@ databaseChangeLog:
         - insert:
             tableName: measurement_unit
             columns:
-              - column: { name: name, value: "кг" }
-
-        - insert:
-            tableName: measurement_unit
-            columns:
               - column: { name: name, value: "мл" }
 
         - insert:
             tableName: measurement_unit
             columns:
-              - column: { name: name, value: "л" }
-
-        - insert:
-            tableName: measurement_unit
-            columns:
               - column: { name: name, value: "шт" }
-
-        - insert:
-            tableName: measurement_unit
-            columns:
-              - column: { name: name, value: "щепотка" }
 
         - insert:
             tableName: measurement_unit
@@ -59,21 +44,6 @@ databaseChangeLog:
             tableName: measurement_unit
             columns:
               - column: { name: name, value: "ст.л." }
-
-        - insert:
-            tableName: measurement_unit
-            columns:
-              - column: { name: name, value: "зубчик" }
-
-        - insert:
-            tableName: measurement_unit
-            columns:
-              - column: { name: name, value: "пучок" }
-
-        - insert:
-            tableName: measurement_unit
-            columns:
-              - column: { name: name, value: "ломтик" }
 
         - addColumn:
             tableName: dish_ingredient

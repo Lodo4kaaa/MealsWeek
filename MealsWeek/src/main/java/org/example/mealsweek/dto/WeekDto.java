@@ -6,7 +6,5 @@ import java.io.Serializable;
 
 public record WeekDto(
         Long id,
-
-        @NotBlank(message = "Статус недели должен быть заполнен")
         boolean active
 ) implements Serializable {}
