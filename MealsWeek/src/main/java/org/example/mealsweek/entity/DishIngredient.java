@@ -35,8 +35,9 @@ public class DishIngredient {
     @Column(name = "amount", nullable = false, precision = 19, scale = 4)
     private BigDecimal amount;
 
-    @Column(name = "unit", nullable = false)
-    private String unit;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "measurement_unit_id", nullable = false)
+    private MeasurementUnit measurementUnit;;
 
     @Column(name = "note")
     private String note;

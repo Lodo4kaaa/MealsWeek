@@ -13,6 +13,8 @@ import java.util.Set;
 public interface DishMapper {
     @Mapping(target = "ingredientId", source = "ingredient.id")
     @Mapping(target = "ingredientName", source = "ingredient.name")
+    @Mapping(target = "measurementUnitId", source = "measurementUnit.id")
+    @Mapping(target = "measurementUnitName", source = "measurementUnit.name")
     DishDto.IngredientLineDto toIngredientLineDto(DishIngredient entity);
 
     List<DishDto.IngredientLineDto> toIngredientLineDtoList(Set<DishIngredient> entities);

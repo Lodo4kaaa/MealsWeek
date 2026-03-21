@@ -1,0 +1,117 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-measurement-unit
+      author: openai
+      changes:
+        - createTable:
+            tableName: measurement_unit
+            columns:
+              - column:
+                  name: measurement_unit_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_measurement_unit
+              - column:
+                  name: name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+
+        - insert:
+            tableName: measurement_unit
+            columns:
+              - column: { name: name, value: "г" }
+
+        - insert:
+            tableName: measurement_unit
+            columns:
+              - column: { name: name, value: "кг" }
+
+        - insert:
+            tableName: measurement_unit
+            columns:
+              - column: { name: name, value: "мл" }
+
+        - insert:
+            tableName: measurement_unit
+            columns:
+              - column: { name: name, value: "л" }
+
+        - insert:
+            tableName: measurement_unit
+            columns:
+              - column: { name: name, value: "шт" }
+
+        - insert:
+            tableName: measurement_unit
+            columns:
+              - column: { name: name, value: "щепотка" }
+
+        - insert:
+            tableName: measurement_unit
+            columns:
+              - column: { name: name, value: "ч.л." }
+
+        - insert:
+            tableName: measurement_unit
+            columns:
+              - column: { name: name, value: "ст.л." }
+
+        - insert:
+            tableName: measurement_unit
+            columns:
+              - column: { name: name, value: "зубчик" }
+
+        - insert:
+            tableName: measurement_unit
+            columns:
+              - column: { name: name, value: "пучок" }
+
+        - insert:
+            tableName: measurement_unit
+            columns:
+              - column: { name: name, value: "ломтик" }
+
+        - addColumn:
+            tableName: dish_ingredient
+            columns:
+              - column:
+                  name: measurement_unit_id
+                  type: BIGINT
+
+        - sql:
+            sql: |
+              UPDATE dish_ingredient di
+              SET measurement_unit_id = mu.measurement_unit_id
+              FROM measurement_unit mu
+              WHERE di.unit IS NOT NULL
+                AND lower(trim(di.unit)) = lower(trim(mu.name));
+
+        - sql:
+            sql: |
+              UPDATE dish_ingredient
+              SET measurement_unit_id = (
+                SELECT measurement_unit_id
+                FROM measurement_unit
+                WHERE name = 'шт'
+              )
+              WHERE measurement_unit_id IS NULL;
+
+        - addForeignKeyConstraint:
+            baseTableName: dish_ingredient
+            baseColumnNames: measurement_unit_id
+            referencedTableName: measurement_unit
+            referencedColumnNames: measurement_unit_id
+            constraintName: fk_dish_ingredient_measurement_unit
+
+        - addNotNullConstraint:
+            tableName: dish_ingredient
+            columnName: measurement_unit_id
+            columnDataType: BIGINT
+
+        - dropColumn:
+            tableName: dish_ingredient
+            columnName: unit

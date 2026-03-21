@@ -22,7 +22,6 @@ public record DishDto(
     public record IngredientLineDto(
             Long ingredientId,
 
-            @NotNull(message = "Имя обязательно")
             String ingredientName,
 
             @NotNull(message = "Количество обязательно")
@@ -30,7 +29,8 @@ public record DishDto(
             BigDecimal amount,
 
             @NotBlank(message = "Тип должен быть заполнен")
-            String unit,
+            Long measurementUnitId,
+            String measurementUnitName,
 
             String note
     ) implements Serializable {}

@@ -21,7 +21,8 @@ public record DishIngredientDto(
         BigDecimal amount,
 
         @NotBlank(message = "Тип должен быть заполнен")
-        String unit,
+        Long measurementUnitId,
+        String measurementUnitName,
 
         String note
 ) implements Serializable { }

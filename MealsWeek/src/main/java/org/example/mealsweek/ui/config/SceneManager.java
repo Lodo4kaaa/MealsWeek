@@ -3,7 +3,10 @@ package org.example.mealsweek.ui.config;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
+import org.example.mealsweek.service.DishService;
 import org.example.mealsweek.service.IngredientService;
+import org.example.mealsweek.service.MeasurementUnitService;
+import org.example.mealsweek.ui.Dish.DishesView;
 import org.example.mealsweek.ui.Ingredient.IngredientsView;
 import org.example.mealsweek.ui.MainMenuView;
 import org.springframework.stereotype.Component;
@@ -13,6 +16,8 @@ import org.springframework.stereotype.Component;
 public class SceneManager {
 
     private final IngredientService ingredientService;
+    private final DishService dishService;
+    private final MeasurementUnitService measurementUnitService;
 
     private Stage stage;
     private Scene scene;
@@ -37,8 +42,15 @@ public class SceneManager {
         scene.setRoot(new IngredientsView(ingredientService, this::showMainMenu));
     }
 
-    // Заглушки на будущее:
-    public void showWeeks() { /* позже */ }
-    public void showDishes() { /* позже */ }
+    public void showDishes() {
+        scene.setRoot(new DishesView(
+                dishService,
+                ingredientService,
+                measurementUnitService,
+                this::showMainMenu
+        ));
+    }
     public void showShopping() { /* позже */ }
+
+    public void showWeeks() { /* позже */ }
 }
